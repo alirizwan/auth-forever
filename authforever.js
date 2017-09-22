@@ -13,7 +13,7 @@ function findDomain(context){
 
         db.getItem({
             TableName: context.secrets.USERS_TABLE,
-            Key: { email: context.data.email }
+            Key: { email: context.data.email || context.data.username }
         }, (err, result) => {
             console.log(result);
             if(err){
@@ -99,7 +99,7 @@ function signup(data, credentials){
     return auth0.database.signUp(data).then(user => {
         if(user){
             return increaseUserCount(credentials.account).then(_ => {
-                return createUser({ email: data.email, account: credentials.account, clientId: credentials.clientId });
+                return createUser({ email: data.email || data.username, account: credentials.account, clientId: credentials.clientId });
             }).then(_ => {
                 return user;
             });
