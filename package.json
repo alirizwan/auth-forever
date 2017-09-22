@@ -1,0 +1,17 @@
+{
+  "name": "auth-forever",
+  "version": "0.0.1",
+  "description": "Auth Forever",
+  "main": "authforever.js",
+  "scripts": {
+    "start": "node authforever.js"
+  },
+  "author": "Ali Rizwan",
+  "license": "gnu",
+  "dependencies": {
+    "auth0": "^2.7.0",
+    "aws-sdk": "^2.121.0",
+    "dynamodb-doc": "^1.0.0",
+    "uuid": "^3.1.0"
+  }
+}
