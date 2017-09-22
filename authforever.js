@@ -13,9 +13,9 @@ function findDomain(context){
 
         db.getItem({
             TableName: context.secrets.USERS_TABLE,
-            Key: { email: context.data.email || context.data.username }
+            Key: { email: context.data.email }
         }, (err, result) => {
-            console.log(result);
+
             if(err){
                 reject(err);
             }else{
@@ -99,7 +99,7 @@ function signup(data, credentials){
     return auth0.database.signUp(data).then(user => {
         if(user){
             return increaseUserCount(credentials.account).then(_ => {
-                return createUser({ email: data.email || data.username, account: credentials.account, clientId: credentials.clientId });
+                return createUser({ email: data.email, account: credentials.account, clientId: credentials.clientId });
             }).then(_ => {
                 return user;
             });
@@ -109,11 +109,11 @@ function signup(data, credentials){
 
 function auth(data){
 
-    return auth0.database.signUp({
+    return auth0.database.signIn({
         username: data.username,
         password: data.password,
-        realm: 'Username-Password-Authentication',
-        scope: data.scope
+        connection: 'Username-Password-Authentication',
+        scope: data.scope || 'openid profile email'
     });
 }
 
@@ -152,6 +152,8 @@ module.exports = (context, callback) => {
 
     }).then(data => {
         callback(data);
+    }).catch(err => {
+        callback(err.message);
     });
 
 };
